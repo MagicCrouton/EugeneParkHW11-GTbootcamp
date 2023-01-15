@@ -29,13 +29,22 @@ app.post('/api/notes', (req, res) => {
   let idAdd = req.body;
   idAdd.id = uuid();
   dataBase.push(idAdd);
-  fs.writeFile('./db/db.json', JSON.stringify(dataBase), (err) => {
-    console.log(err);
+  fs.writeFile('./db/db.json', JSON.stringify(dataBase,null,2), (err) => {
+    err
+    ? console.error(err)
+    : console.log(`Note ${idAdd.id} has been added`)
   })
 });
 
 app.delete('/api/notes/:id', (req, res) => {
-  console.log(req);
+  console.log(req.params);
+  let index = dataBase.findIndex((element) => req.params.id === element.id);
+  dataBase.splice(index,1);
+  fs.writeFile('./db/db.json', JSON.stringify(dataBase,null,2), (err) => {
+    err
+    ? console.error(err)
+    : console.log(`Note ${req.params.id} has deleted`)
+  })
 })
 
 app.listen(PORT, () =>
