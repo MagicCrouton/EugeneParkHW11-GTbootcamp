@@ -83,8 +83,6 @@ const handleNoteDelete = (e) => {
   e.stopPropagation();
 
   const note = e.target;
-  // console.log(note.parentElement.getAttribute('data-note'))
-  // console.log(JSON.parse(note.parentElement.getAttribute('data-note')))
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
   console.log(noteId);
 
@@ -95,7 +93,6 @@ const handleNoteDelete = (e) => {
   deleteNote(noteId).then(() => {
     getAndRenderNotes();
     renderActiveNote();
-    location.reload();
   });
 };
 

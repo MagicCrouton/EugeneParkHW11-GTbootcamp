@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const uuid = require('./Utilites/uuid');
+const { v4: uuidv4 } = require('uuid');
 const dataBase = require('./db/db.json');
 const fs = require('fs');
 const { json } = require('express');
@@ -27,12 +27,12 @@ app.get('/api/notes', (req, res) => res.json(dataBase));
 // this route needs to accept note and add it to database
 app.post('/api/notes', (req, res) => {
   let idAdd = req.body;
-  idAdd.id = uuid();
+  idAdd.id = uuidv4();
   dataBase.push(idAdd);
   fs.writeFile('./db/db.json', JSON.stringify(dataBase,null,2), (err) => {
     err
-    ? console.error(err)
-    : console.log(`Note ${idAdd.id} has been added`)
+    ? res.json(err)
+    : res.json(`Note ${idAdd.id} has been added`)
   })
 });
 
@@ -42,8 +42,8 @@ app.delete('/api/notes/:id', (req, res) => {
   dataBase.splice(index,1);
   fs.writeFile('./db/db.json', JSON.stringify(dataBase,null,2), (err) => {
     err
-    ? console.error(err)
-    : console.log(`Note ${req.params.id} has deleted`)
+    ? res.json(err)
+    : res.json(`Note ${req.params.id} has deleted`)
   })
 })
 
