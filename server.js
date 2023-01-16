@@ -5,7 +5,11 @@ const { v4: uuidv4 } = require('uuid');
 const dataBase = require('./db/db.json');
 const fs = require('fs');
 const { json } = require('express');
-const PORT = process.env.ExpressPort || 3001;
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3001;
+}
+
 
 
 
@@ -47,6 +51,6 @@ app.delete('/api/notes/:id', (req, res) => {
   })
 })
 
-app.listen(PORT, () =>
-  console.log(`Listening at http://localhost:${PORT}`)
+app.listen(port, () =>
+  console.log(`Listening at http://localhost:${port}`)
 );
